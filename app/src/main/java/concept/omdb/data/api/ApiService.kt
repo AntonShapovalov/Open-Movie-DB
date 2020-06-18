@@ -16,4 +16,10 @@ interface ApiService {
         @Query("s") title: String
     ): Observable<Response<MoviesResponse>>
 
+    @GET("/.")
+    fun getMovieInfo(
+        @Query("apikey") apiKey: String,
+        @Query("i") imdbID: String
+    ): Observable<Response<MovieInfoResponse>>
+
 }
