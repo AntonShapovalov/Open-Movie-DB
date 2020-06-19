@@ -3,8 +3,10 @@ package concept.omdb.data.repo
 import concept.omdb.data.api.MovieEntry
 import concept.omdb.data.api.MovieInfoResponse
 import concept.omdb.data.dao.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.abs
 
 /**
  * Provide Movies' data from local DB
@@ -16,6 +18,9 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
     private val movieInfoDao: MovieInfoDao = daoSession.movieInfoDao
     private val searchDao: SearchDao = daoSession.searchDao
     private val search2MovieDao: Search2MovieDao = daoSession.search2MovieDao
+
+    // keep every search result one month without update from remote API
+    private val expirationTime = TimeUnit.DAYS.toMillis(30)
 
     /**
      * Save search query from UI and movies from API response
@@ -31,10 +36,13 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
 
     /**
      * Get local saved movies
+     * If local cache is expired (older than [expirationTime]), return empty list
      */
     fun getMovies(query: String): List<Movie> {
         val dbSearch = findSearchByPK(query) ?: return emptyList()
-        searchDao.updateInTx(dbSearch.apply { execDate = System.currentTimeMillis() })
+        val currentTime = System.currentTimeMillis()
+        if (abs(currentTime - dbSearch.execDate) > expirationTime) return emptyList()
+        searchDao.updateInTx(dbSearch.apply { execDate = currentTime })
         return dbSearch.movies
     }
 
