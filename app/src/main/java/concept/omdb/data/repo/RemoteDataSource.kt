@@ -11,10 +11,9 @@ import javax.inject.Singleton
  * Provides Movies data from [ApiService]
  */
 @Singleton
-class RemoteStorage @Inject constructor() {
+class RemoteDataSource @Inject constructor() {
 
-    @Inject
-    lateinit var apiService: ApiService
+    @Inject lateinit var apiService: ApiService
 
     private val _apiKey = "74c10a54"
 

@@ -11,15 +11,14 @@ import org.junit.Test
 import javax.inject.Inject
 
 /**
- * Test for [RemoteStorage]
+ * Test for [RemoteDataSource]
+ * Run test to get it compiled!
+ *
+ * Test uses real network communication and dedicated for testing API model and retrofit API config
  */
-class RemoteStorageTest {
+class RemoteDataSourceTest {
 
-    @Inject
-    lateinit var remoteStorage: RemoteStorage
-
-    private var testTitle = "terminator"
-    private var testImdbID = "tt0103064"
+    @Inject lateinit var remoteDataSource: RemoteDataSource
 
     @Before
     fun setUp() = DaggerApiTestComponent.builder()
@@ -30,12 +29,11 @@ class RemoteStorageTest {
     @Test
     fun getImages() {
         val testObserver = TestObserver<List<MovieEntry>>()
-        remoteStorage.getMovies(title = testTitle)
+        remoteDataSource.getMovies(title = "terminator")
             .doOnNext { list ->
                 Assert.assertTrue(list.isNotEmpty())
                 list.forEach {
                     Assert.assertTrue(it.imdbID.isNotEmpty())
-                    testImdbID = it.imdbID
                     println(it)
                 }
             }.subscribe(testObserver)
@@ -46,7 +44,7 @@ class RemoteStorageTest {
     @Test
     fun getImageInfo() {
         val testObserver = TestObserver<MovieInfoResponse>()
-        remoteStorage.getMovieInfo(imdbID = testImdbID)
+        remoteDataSource.getMovieInfo(imdbID = "tt0103064")
             .doOnNext {
                 Assert.assertTrue(it.imdbID.isNotEmpty())
                 println(it)
