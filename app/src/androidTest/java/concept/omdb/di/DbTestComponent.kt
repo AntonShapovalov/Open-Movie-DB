@@ -9,7 +9,7 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = [AppModule::class])
-interface AppTestComponent {
+interface DbTestComponent {
 
     fun inject(test: LocalDataSourceAndroidTest)
 

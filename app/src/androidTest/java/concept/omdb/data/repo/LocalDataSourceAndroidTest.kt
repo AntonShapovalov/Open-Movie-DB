@@ -5,13 +5,15 @@ import androidx.test.platform.app.InstrumentationRegistry
 import concept.omdb.data.api.MovieEntry
 import concept.omdb.data.api.MovieInfoResponse
 import concept.omdb.data.dao.DaoSession
+import concept.omdb.data.dao.Search
 import concept.omdb.di.AppModule
-import concept.omdb.di.DaggerAppTestComponent
+import concept.omdb.di.DaggerDbTestComponent
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -29,7 +31,7 @@ class LocalDataSourceAndroidTest {
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-        DaggerAppTestComponent.builder()
+        DaggerDbTestComponent.builder()
             .appModule(AppModule(context))
             .build()
             .inject(this)
@@ -137,6 +139,18 @@ class LocalDataSourceAndroidTest {
         Assert.assertEquals(metaScore, movieInfo.metaScore)
         Assert.assertEquals(imdbRating, movieInfo.imdbRating)
         Assert.assertEquals(imdbID, movieInfo.imdbID)
+    }
+
+    @Test
+    fun isSearchExpired() {
+        // not expired search
+        var time = System.currentTimeMillis()
+        val search = Search(1, "test query", time)
+        Assert.assertFalse(localDataSource.isSearchExpired(search))
+        // expired search
+        time -= (localDataSource.expirationTime + TimeUnit.DAYS.toMillis(1))
+        search.execDate = time
+        Assert.assertTrue(localDataSource.isSearchExpired(search))
     }
 
     @After

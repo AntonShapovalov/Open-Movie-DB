@@ -19,8 +19,8 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
     private val searchDao: SearchDao = daoSession.searchDao
     private val search2MovieDao: Search2MovieDao = daoSession.search2MovieDao
 
-    // keep every search result one month without update from remote API
-    private val expirationTime = TimeUnit.DAYS.toMillis(30)
+    // keeps every search result one month without update from remote API
+    internal val expirationTime = TimeUnit.DAYS.toMillis(30)
 
     /**
      * Save search query from UI and movies from API response
@@ -40,9 +40,8 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
      */
     fun getMovies(query: String): List<Movie> {
         val dbSearch = findSearchByPK(query) ?: return emptyList()
-        val currentTime = System.currentTimeMillis()
-        if (abs(currentTime - dbSearch.execDate) > expirationTime) return emptyList()
-        searchDao.updateInTx(dbSearch.apply { execDate = currentTime })
+        if (isSearchExpired(dbSearch)) return emptyList()
+        searchDao.updateInTx(dbSearch.apply { execDate = System.currentTimeMillis() })
         return dbSearch.movies
     }
 
@@ -77,6 +76,14 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
      * Get movie info
      */
     fun getMovieInfo(imdbID: String): MovieInfo = findMovieInfoByPK(imdbID) ?: MovieInfo()
+
+    /**
+     * Return true if search executed more than 1 month ago
+     */
+    internal fun isSearchExpired(search: Search): Boolean {
+        val currentTime = System.currentTimeMillis()
+        return abs(currentTime - search.execDate) > expirationTime
+    }
 
     private fun saveSearch(query: String): Search {
         var dbSearch = findSearchByPK(query)
