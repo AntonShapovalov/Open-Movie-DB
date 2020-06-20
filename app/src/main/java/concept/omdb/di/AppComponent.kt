@@ -1,5 +1,6 @@
 package concept.omdb.di
 
+import concept.omdb.ui.list.MovieListViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -10,6 +11,6 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class, ApiModule::class])
 interface AppComponent {
 
-//    fun inject(gridViewModel: GridViewModel)
+    fun inject(movieListViewModel: MovieListViewModel)
 
 }

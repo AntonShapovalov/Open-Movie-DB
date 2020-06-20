@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Module
 class ApiModule {
 
-    private val baseUrl = "http://www.omdbapi.com/"
+    private val baseUrl = "https://www.omdbapi.com/"
     private val connectionTimeout = 30 // seconds
     private val readTimeout = 30 // seconds
 

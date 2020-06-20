@@ -2,5 +2,6 @@
     <string name="app_name">Open Movie DB</string>
     <string name="fragment_list">Open Movie Database</string>
     <string name="fragment_info">Movie info</string>
+    <string name="image_description">Movie poster</string>
     <string name="text_retry">Retry</string>
 </resources>
