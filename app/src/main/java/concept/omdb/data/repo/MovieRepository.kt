@@ -17,7 +17,7 @@ class MovieRepository @Inject constructor() {
 
     /**
      * Get movies' list from local cache or from remote API
-     * If local cache is expired (see [LocalDataSource.expirationTime]) - reload data from remote
+     * If local cache is expired (see [LocalDataSource.expirationTime]) - reload data from API
      */
     fun getMovies(query: String): Observable<List<Movie>> =
         localMovies(query).switchIfEmpty(Observable.defer { remoteMovies(query) })
@@ -30,7 +30,7 @@ class MovieRepository @Inject constructor() {
         localMovieInfo(imdbID).switchIfEmpty(Observable.defer { remoteMovieInfo(imdbID) })
 
     /**
-     * Private functions to keep public function code shorter and readable
+     * Private functions to keep public functions' code shorter and readable
      */
     private fun localMovies(query: String): Observable<List<Movie>> = Observable
         .fromCallable { localData.getMovies(query) }
