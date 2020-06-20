@@ -43,7 +43,7 @@ class MovieRepository @Inject constructor() {
 
     private fun localMovieInfo(imdbID: String): Observable<MovieInfo> = Observable
         .fromCallable { localData.getMovieInfo(imdbID) }
-        .filter { it.imdbID.isNotEmpty() }
+        .filter { !it.imdbID.isNullOrEmpty() }
 
     private fun remoteMovieInfo(imdbID: String): Observable<MovieInfo> = remoteData
         .getMovieInfo(imdbID = imdbID)

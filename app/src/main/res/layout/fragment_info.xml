@@ -1,7 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/infoFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/imageViewPoster"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_description"
+                android:src="@drawable/ic_movie_placeholder" />
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:text="Terminator 2: Judgment Day" />
+
+            <!-- Year -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_year"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="1991" />
+
+            <!-- Genre -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_genre"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewGenre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="fantasy" />
+
+            <!-- Director -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_director"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewDirector"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="Cameron" />
+
+            <!-- Actors -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_actors"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewActors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="Arnold, Linda" />
+
+            <!-- MetaScore -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_meta_score"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewMetaScore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="99" />
+
+            <!-- ImdbRating -->
+            <TextView
+                android:layout_width="@dimen/image_info_name_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/movie_imdb_rating"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewImdbRating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="99.9" />
+
+            <TextView
+                android:id="@+id/textViewPlot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"
+                android:layout_marginTop="8dp"
+                tools:text="A cyborg, identical to the one who failed to kill Sarah Connor, must now protect her teenage son, John Connor, from a more advanced and powerful cyborg." />
+
+        </GridLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="visible" />
 
 </FrameLayout>

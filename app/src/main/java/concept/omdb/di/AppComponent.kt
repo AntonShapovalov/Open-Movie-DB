@@ -1,5 +1,6 @@
 package concept.omdb.di
 
+import concept.omdb.ui.info.MovieInfoViewModel
 import concept.omdb.ui.list.MovieListViewModel
 import dagger.Component
 import javax.inject.Singleton
@@ -12,5 +13,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(movieListViewModel: MovieListViewModel)
+
+    fun inject(movieInfoViewModel: MovieInfoViewModel)
 
 }

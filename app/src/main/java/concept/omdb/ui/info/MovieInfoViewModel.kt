@@ -1,58 +1,58 @@
-package concept.omdb.ui.list
+package concept.omdb.ui.info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.MovieData
 import concept.omdb.ui.activity.MovieErrorData
-import concept.omdb.ui.activity.MovieListData
+import concept.omdb.ui.activity.MovieInfoData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 /**
- * View Model for [MovieListFragment]
+ * View Model for [MovieInfoFragment]
  */
-class MovieListViewModel : ViewModel() {
+class MovieInfoViewModel : ViewModel() {
 
     @Inject lateinit var repository: MovieRepository
 
     val data = MutableLiveData<MovieData>()
     val progress = MutableLiveData<Boolean>()
 
-    private var query = ""
+    private var imdbID = ""
     private var disposable = Disposables.disposed()
 
     /**
-     * Load movies, save query to reload data on error
-     * Do not start loading if [data] exist and the query the same
+     * Initial loading, save imdbID to reload data on error
+     * Load data once only, if [data] is not empty - just return
      */
-    fun getMovies(title: String) {
-        if (title.isEmpty() || (title == query && data.value is MovieListData)) return
-        query = title
-        getMovies()
+    fun getMovieInfo(imdbID: String) {
+        if (data.value != null || imdbID.isEmpty()) return
+        this.imdbID = imdbID
+        getMovieInfo()
     }
 
     /**
-     * Try to reload data on error
+     * Reload info on error
      */
-    fun reloadMovies() {
-        if (query.isEmpty()) return
-        getMovies()
+    fun reloadMovieInfo() {
+        if (imdbID.isEmpty()) return
+        getMovieInfo()
     }
 
     /**
-     * Load list of movies based on [query]
+     * Load movie's info based on imdbID
      */
-    private fun getMovies() {
+    private fun getMovieInfo() {
         if (!disposable.isDisposed) return
-        disposable = repository.getMovies(query)
+        disposable = repository.getMovieInfo(imdbID)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { progress.postValue(true) }
             .doFinally { progress.postValue(false) }
-            .subscribe({ data.value = MovieListData(it) }, { data.value = MovieErrorData(it) })
+            .subscribe({ data.value = MovieInfoData(it) }, { data.value = MovieErrorData(it) })
     }
 
     override fun onCleared() {

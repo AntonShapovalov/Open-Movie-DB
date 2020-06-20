@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import concept.omdb.R
 import concept.omdb.ui.activity.*
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -21,9 +20,7 @@ class MovieListFragment : Fragment() {
     private val adapter = MovieListAdapter { showMovieInfo(it) }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
@@ -48,15 +45,8 @@ class MovieListFragment : Fragment() {
 
     private fun updateUI(data: MovieData) = when (data) {
         is MovieListData -> adapter.setItems(data.list)
-        is MovieErrorData -> showError(data.throwable)
-    }
-
-    private fun showError(throwable: Throwable) {
-        Timber.e(throwable)
-        val text = throwable.localizedMessage
-        Snackbar.make(listFrame, text ?: "Unknown error", Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.text_retry) { viewModel.reloadMovies() }
-            .show()
+        is MovieErrorData -> listFrame.showError(data.throwable) { viewModel.reloadMovies() }
+        else -> Timber.d("Unhandled data %s", data.javaClass.simpleName)
     }
 
     private fun showMovieInfo(imdbID: String) {
