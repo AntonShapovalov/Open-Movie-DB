@@ -32,7 +32,10 @@ class MovieListFragment : Fragment() {
         layoutManager.isSmoothScrollbarEnabled = true
         moviesList.layoutManager = layoutManager
         moviesList.adapter = adapter
-        floatingSearchView.setOnSearchListener(MovieSearchListener(viewModel))
+        with(floatingSearchView) {
+            setOnSearchListener(MovieSearchListener(this, viewModel))
+            setOnQueryChangeListener(MovieQueryChangeListener(this, viewModel))
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -42,6 +45,7 @@ class MovieListFragment : Fragment() {
             progress.observe(viewLifecycleOwner, Observer { progressBar.showOrHide(it) })
             data.observe(viewLifecycleOwner, Observer { updateUI(it) })
             loadLastSearch()
+            loadSuggestions()
         }
     }
 
@@ -56,7 +60,7 @@ class MovieListFragment : Fragment() {
     private fun setLastSearchData(search: Search) {
         if (search.query == null || search.query.isEmpty()) return
         floatingSearchView.setSearchText(search.query)
-        search.movies?.let { if (it.isNotEmpty()) adapter.setItems(search.movies) }
+        search.movies?.takeIf { it.isNotEmpty() }?.let { adapter.setItems(it) }
     }
 
     private fun showMovieInfo(imdbID: String) {

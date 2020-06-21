@@ -32,9 +32,16 @@ class MovieRepository @Inject constructor() {
 
     /**
      * Load last search from local DB
-     * If search does not exists yet (on first app start), returns object with empty movies list
+     * If search does not exists yet (on first app start), returns empty object (query is null)
      */
     fun getLastSearch(): Observable<Search> = Observable.fromCallable { localData.getLastSearch() }
+
+    /**
+     * Get all saved queries from local DB
+     */
+    fun getAllQueries(): Observable<List<String>> = Observable
+        .fromCallable { localData.getAllSearches() }
+        .map { search -> search.map { it.query } }
 
     /**
      * Private functions to keep public functions' code shorter and readable

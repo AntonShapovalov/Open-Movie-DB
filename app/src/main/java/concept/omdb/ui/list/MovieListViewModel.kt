@@ -21,6 +21,7 @@ class MovieListViewModel : ViewModel() {
     val progress = MutableLiveData<Boolean>()
 
     private var query = ""
+    private val suggestions = HashSet<MovieSuggestion>()
     private var compositeDisposable = CompositeDisposable()
     private val isProgress get() = progress.value == true
 
@@ -34,12 +35,28 @@ class MovieListViewModel : ViewModel() {
     }
 
     /**
+     * Load all previous queries to use them as suggestions
+     */
+    fun loadSuggestions() {
+        if (suggestions.isNotEmpty()) return
+        getSuggestions()
+    }
+
+    /**
+     * Filter all suggestions by search input
+     */
+    fun filterSuggestions(query: String): List<MovieSuggestion> = suggestions
+        .filter { it.query.contains(query, ignoreCase = true) }
+        .sortedBy { it.query }
+
+    /**
      * Load movies, save query to reload data on error
      * Do not start loading if [data] exists and the query the same
      */
     fun getMovies(title: String) {
         if (title.isEmpty() || (title == query && data.value is MovieListData)) return
         query = title
+        suggestions.add(MovieSuggestion(title))
         getMovies()
     }
 
@@ -51,9 +68,6 @@ class MovieListViewModel : ViewModel() {
         getMovies()
     }
 
-    /**
-     * Load last executed query
-     */
     private fun getLastSearch() {
         if (isProgress) return else progress.value = true
         val d = repository.getLastSearch()
@@ -64,9 +78,16 @@ class MovieListViewModel : ViewModel() {
         compositeDisposable.add(d)
     }
 
-    /**
-     * Load list of movies based on [query]
-     */
+    private fun getSuggestions() {
+        val d = repository.getAllQueries()
+            .map { query -> query.map { MovieSuggestion(it) } }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doFinally { progress.postValue(false) }
+            .subscribe({ suggestions.addAll(it) }, { Timber.e(it) })
+        compositeDisposable.add(d)
+    }
+
     private fun getMovies() {
         if (isProgress) return else progress.value = true
         val d = repository.getMovies(query)

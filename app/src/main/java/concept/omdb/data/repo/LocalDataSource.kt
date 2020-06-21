@@ -57,6 +57,11 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
     }
 
     /**
+     * Load all searches to use them as suggestions
+     */
+    fun getAllSearches(): List<Search> = searchDao.loadAll()
+
+    /**
      * Save movie info
      */
     fun saveMovieInfo(movieInfo: MovieInfoResponse) {
