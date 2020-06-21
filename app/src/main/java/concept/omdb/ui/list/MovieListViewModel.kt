@@ -36,6 +36,7 @@ class MovieListViewModel : ViewModel() {
 
     /**
      * Load all previous queries to use them as suggestions
+     * Do not show progress, load it silently
      */
     fun loadSuggestions() {
         if (suggestions.isNotEmpty()) return
@@ -83,7 +84,6 @@ class MovieListViewModel : ViewModel() {
             .map { query -> query.map { MovieSuggestion(it) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doFinally { progress.postValue(false) }
             .subscribe({ suggestions.addAll(it) }, { Timber.e(it) })
         compositeDisposable.add(d)
     }
