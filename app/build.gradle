@@ -71,4 +71,6 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     // glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    // floating search view
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
 }

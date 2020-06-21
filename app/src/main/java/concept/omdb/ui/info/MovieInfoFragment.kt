@@ -26,8 +26,8 @@ class MovieInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        activity?.appComponent?.inject(viewModel)
         with(viewModel) {
+            activity?.appComponent?.inject(this)
             progress.observe(viewLifecycleOwner, Observer { progressBar.showOrHide(it) })
             data.observe(viewLifecycleOwner, Observer { updateUI(it) })
             arguments?.let { getMovieInfo(MovieInfoFragmentArgs.fromBundle(it).imdbID) }

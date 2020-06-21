@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.*
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposables
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -20,8 +21,8 @@ class MovieListViewModel : ViewModel() {
     val progress = MutableLiveData<Boolean>()
 
     private var query = ""
-    private var disposable = Disposables.disposed()
-    private val isProgress = progress.value == true
+    private var compositeDisposable = CompositeDisposable()
+    private val isProgress get() = progress.value == true
 
     /**
      * Get last executed search from local DB
@@ -54,30 +55,36 @@ class MovieListViewModel : ViewModel() {
      * Load last executed query
      */
     private fun getLastSearch() {
-        if (!disposable.isDisposed || isProgress) return
-        disposable = repository.getLastSearch()
+        if (isProgress) return else progress.value = true
+        val d = repository.getLastSearch()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { progress.postValue(true) }
             .doFinally { progress.postValue(false) }
-            .subscribe({ data.value = LastSearchData(it) }, { data.value = LastSearchError(it) })
+            .subscribe({ onResult(LastSearchData(it)) }, { onResult(LastSearchError(it), it) })
+        compositeDisposable.add(d)
     }
 
     /**
      * Load list of movies based on [query]
      */
     private fun getMovies() {
-        if (!disposable.isDisposed || isProgress) return
-        disposable = repository.getMovies(query)
+        if (isProgress) return else progress.value = true
+        val d = repository.getMovies(query)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { progress.postValue(true) }
             .doFinally { progress.postValue(false) }
-            .subscribe({ data.value = MovieListData(it) }, { data.value = MovieDataError(it) })
+            .subscribe({ onResult(MovieListData(it)) }, { onResult(MovieDataError(it), it) })
+        compositeDisposable.add(d)
+    }
+
+    private fun onResult(value: MovieData, error: Throwable? = null) {
+        if (error != null) Timber.e(error)
+        Timber.d("data -> %s", value.javaClass.simpleName)
+        data.value = value
     }
 
     override fun onCleared() {
-        disposable.dispose()
+        compositeDisposable.clear()
         super.onCleared()
     }
 

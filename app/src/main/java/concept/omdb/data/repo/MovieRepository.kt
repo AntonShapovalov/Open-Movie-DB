@@ -31,7 +31,8 @@ class MovieRepository @Inject constructor() {
         localMovieInfo(imdbID).switchIfEmpty(Observable.defer { remoteMovieInfo(imdbID) })
 
     /**
-     * Load last query from local DB
+     * Load last search from local DB
+     * If search does not exists yet (on first app start), returns object with empty movies list
      */
     fun getLastSearch(): Observable<Search> = Observable.fromCallable { localData.getLastSearch() }
 

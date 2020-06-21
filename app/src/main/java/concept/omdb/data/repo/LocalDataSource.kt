@@ -47,10 +47,14 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
 
     /**
      * Try to find last success search to restore UI state on launch
+     * If local cache is expired (older than [expirationTime]), return empty object
      */
-    fun getLastSearch(): Search = searchDao.queryBuilder()
-        .orderDesc(SearchDao.Properties.ExecDate)
-        .list().firstOrNull() ?: Search()
+    fun getLastSearch(): Search {
+        val dbSearch = searchDao.queryBuilder()
+            .orderDesc(SearchDao.Properties.ExecDate)
+            .list().firstOrNull()
+        return if (dbSearch == null || isSearchExpired(dbSearch)) Search() else dbSearch
+    }
 
     /**
      * Save movie info

@@ -9,6 +9,7 @@ import concept.omdb.ui.activity.MovieInfoData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -22,7 +23,8 @@ class MovieInfoViewModel : ViewModel() {
     val progress = MutableLiveData<Boolean>()
 
     private var imdbID = ""
-    private var disposable = Disposables.disposed()
+    private var disposable = Disposables.empty()
+    private val isProgress get() = progress.value == true
 
     /**
      * Initial loading, save imdbID to reload data on error
@@ -46,13 +48,18 @@ class MovieInfoViewModel : ViewModel() {
      * Load movie's info based on imdbID
      */
     private fun getMovieInfo() {
-        if (!disposable.isDisposed) return
+        if (isProgress) return else progress.value = true
         disposable = repository.getMovieInfo(imdbID)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { progress.postValue(true) }
             .doFinally { progress.postValue(false) }
-            .subscribe({ data.value = MovieInfoData(it) }, { data.value = MovieDataError(it) })
+            .subscribe({ onResult(MovieInfoData(it)) }, { onResult(MovieDataError(it), it) })
+    }
+
+    private fun onResult(value: MovieData, error: Throwable? = null) {
+        if (error != null) Timber.e(error)
+        Timber.d("data -> %s", value.javaClass.simpleName)
+        data.value = value
     }
 
     override fun onCleared() {

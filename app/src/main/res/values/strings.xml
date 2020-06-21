@@ -4,6 +4,7 @@
     <string name="fragment_info">Movie info</string>
     <string name="image_description">Movie poster</string>
     <string name="text_retry">Retry</string>
+    <string name="search_hint">Movie title…</string>
     <!-- movie info -->
     <string name="movie_year">Year</string>
     <string name="movie_genre">Genre</string>

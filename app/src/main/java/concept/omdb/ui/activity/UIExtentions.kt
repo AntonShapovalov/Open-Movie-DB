@@ -11,14 +11,14 @@ import concept.omdb.data.dao.Search
 import concept.omdb.di.AppComponent
 import timber.log.Timber
 
-val FragmentActivity.appComponent: AppComponent get() = (application as OMDBApplication).appComponent
-
 sealed class MovieData
 data class MovieListData(val list: List<Movie>) : MovieData()
 data class MovieInfoData(val info: MovieInfo) : MovieData()
 data class MovieDataError(val error: Throwable) : MovieData()
 data class LastSearchData(val search: Search) : MovieData()
 data class LastSearchError(val error: Throwable) : MovieData()
+
+val FragmentActivity.appComponent: AppComponent get() = (application as OMDBApplication).appComponent
 
 fun View.showOrHide(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
