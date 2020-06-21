@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import concept.omdb.R
+import concept.omdb.data.dao.Search
 import concept.omdb.ui.activity.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import timber.log.Timber
@@ -39,14 +40,20 @@ class MovieListFragment : Fragment() {
         with(viewModel) {
             progress.observe(viewLifecycleOwner, Observer { progressBar.showOrHide(it) })
             data.observe(viewLifecycleOwner, Observer { updateUI(it) })
-            getMovies("terminator") // TODO: debug
+            loadLastSearch()
         }
     }
 
     private fun updateUI(data: MovieData) = when (data) {
+        is LastSearchData -> setLastSearchData(data.search)
         is MovieListData -> adapter.setItems(data.list)
-        is MovieErrorData -> listFrame.showError(data.throwable) { viewModel.reloadMovies() }
+        is LastSearchError -> listFrame.showErrorInfo(data.error)
+        is MovieDataError -> listFrame.showErrorAction(data.error) { viewModel.reloadMovies() }
         else -> Timber.d("Unhandled data %s", data.javaClass.simpleName)
+    }
+
+    private fun setLastSearchData(search: Search) {
+        if (search.movies.isNotEmpty()) adapter.setItems(search.movies)
     }
 
     private fun showMovieInfo(imdbID: String) {

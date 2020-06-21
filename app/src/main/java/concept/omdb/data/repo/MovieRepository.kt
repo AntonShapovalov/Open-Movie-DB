@@ -2,6 +2,7 @@ package concept.omdb.data.repo
 
 import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
+import concept.omdb.data.dao.Search
 import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,6 +29,11 @@ class MovieRepository @Inject constructor() {
      */
     fun getMovieInfo(imdbID: String): Observable<MovieInfo> =
         localMovieInfo(imdbID).switchIfEmpty(Observable.defer { remoteMovieInfo(imdbID) })
+
+    /**
+     * Load last query from local DB
+     */
+    fun getLastSearch(): Observable<Search> = Observable.fromCallable { localData.getLastSearch() }
 
     /**
      * Private functions to keep public functions' code shorter and readable

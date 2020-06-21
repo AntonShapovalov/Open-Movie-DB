@@ -96,7 +96,7 @@ class LocalDataSourceAndroidTest {
             Assert.assertEquals(2, searchDao.loadAll().size)
             Assert.assertEquals(2, search2MovieDao.loadAll().size)
         }
-        Assert.assertEquals(secondQuery, localDataSource.getLastSearch())
+        Assert.assertEquals(secondQuery, localDataSource.getLastSearch().query)
     }
 
     @Test

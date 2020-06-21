@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.MovieData
-import concept.omdb.ui.activity.MovieErrorData
+import concept.omdb.ui.activity.MovieDataError
 import concept.omdb.ui.activity.MovieInfoData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
@@ -52,7 +52,7 @@ class MovieInfoViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { progress.postValue(true) }
             .doFinally { progress.postValue(false) }
-            .subscribe({ data.value = MovieInfoData(it) }, { data.value = MovieErrorData(it) })
+            .subscribe({ data.value = MovieInfoData(it) }, { data.value = MovieDataError(it) })
     }
 
     override fun onCleared() {

@@ -36,7 +36,7 @@ class MovieInfoFragment : Fragment() {
 
     private fun updateUI(data: MovieData) = when (data) {
         is MovieInfoData -> setMovieInfo(data.info)
-        is MovieErrorData -> infoFrame.showError(data.throwable) { viewModel.reloadMovieInfo() }
+        is MovieDataError -> infoFrame.showErrorAction(data.error) { viewModel.reloadMovieInfo() }
         else -> Timber.d("Unhandled data %s", data.javaClass.simpleName)
     }
 

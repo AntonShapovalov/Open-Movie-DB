@@ -46,11 +46,11 @@ class LocalDataSource @Inject constructor(private val daoSession: DaoSession) {
     }
 
     /**
-     * Try to find last success query to restore UI state on launch
+     * Try to find last success search to restore UI state on launch
      */
-    fun getLastSearch(): String = searchDao.queryBuilder()
+    fun getLastSearch(): Search = searchDao.queryBuilder()
         .orderDesc(SearchDao.Properties.ExecDate)
-        .list().firstOrNull()?.query ?: ""
+        .list().firstOrNull() ?: Search()
 
     /**
      * Save movie info
