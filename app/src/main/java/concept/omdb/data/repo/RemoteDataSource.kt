@@ -1,8 +1,6 @@
 package concept.omdb.data.repo
 
-import concept.omdb.data.api.ApiService
-import concept.omdb.data.api.MovieEntry
-import concept.omdb.data.api.MovieInfoResponse
+import concept.omdb.data.api.*
 import io.reactivex.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,22 +17,22 @@ class RemoteDataSource @Inject constructor() {
 
     /**
      * Search movies by title
+     * Response can be either [MoviesResponse] or ErrorResponse with message,
+     * in case of error message just always show "Movie Not Found!"
      */
     fun getMovies(
         apiKey: String = _apiKey,
         title: String
     ): Observable<List<MovieEntry>> = apiService.getMovies(apiKey, title)
-        .map { if (it.isSuccessful) it.body()?.movies else throw exception }
+        .map { it.movies ?: throw MovieNotFoundException() }
 
     /**
      * Get full movie info by ID
+     * Only [MovieInfoResponse] is expected, because imdbID is based on previous response
      */
     fun getMovieInfo(
         apiKey: String = _apiKey,
         imdbID: String
     ): Observable<MovieInfoResponse> = apiService.getMovieInfo(apiKey, imdbID)
-        .map { if (it.isSuccessful) it.body() else throw exception }
-
-    private val exception: RuntimeException get() = RuntimeException("Unable to get data!")
 
 }

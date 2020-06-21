@@ -2,6 +2,7 @@ package concept.omdb.data.repo
 
 import concept.omdb.data.api.MovieEntry
 import concept.omdb.data.api.MovieInfoResponse
+import concept.omdb.data.api.MovieNotFoundException
 import concept.omdb.di.ApiModule
 import concept.omdb.di.DaggerApiTestComponent
 import io.reactivex.observers.TestObserver
@@ -39,6 +40,14 @@ class RemoteDataSourceTest {
             }.subscribe(testObserver)
         testObserver.assertNoErrors()
         testObserver.assertComplete()
+    }
+
+    @Test
+    fun movieNotFound() {
+        val testObserver = TestObserver<List<MovieEntry>>()
+        remoteDataSource.getMovies(title = "movienotfound")
+            .subscribe(testObserver)
+        testObserver.assertFailure(MovieNotFoundException::class.java)
     }
 
     @Test

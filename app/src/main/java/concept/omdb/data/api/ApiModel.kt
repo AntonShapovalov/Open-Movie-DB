@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Response model for [ApiService.getMovies]
  */
 data class MoviesResponse(
-    @SerializedName("Search") val movies: List<MovieEntry>
+    @SerializedName("Search") val movies: List<MovieEntry>?
 )
 
 /**
@@ -35,3 +35,8 @@ data class MovieInfoResponse(
     @SerializedName("imdbRating") val imdbRating: String,
     @SerializedName("imdbID") val imdbID: String
 )
+
+/**
+ * Error message in case of error response
+ */
+class MovieNotFoundException : RuntimeException("Movie not found!")

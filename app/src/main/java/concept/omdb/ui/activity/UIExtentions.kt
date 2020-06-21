@@ -14,9 +14,8 @@ import timber.log.Timber
 sealed class MovieData
 data class MovieListData(val list: List<Movie>) : MovieData()
 data class MovieInfoData(val info: MovieInfo) : MovieData()
-data class MovieDataError(val error: Throwable) : MovieData()
 data class LastSearchData(val search: Search) : MovieData()
-data class LastSearchError(val error: Throwable) : MovieData()
+data class MovieDataError(val error: Throwable) : MovieData()
 
 val FragmentActivity.appComponent: AppComponent get() = (application as OMDBApplication).appComponent
 
@@ -25,16 +24,16 @@ fun View.showOrHide(isVisible: Boolean) {
 }
 
 fun View.showErrorAction(error: Throwable, action: (View) -> Unit) {
-    errorSnackbar(error, Snackbar.LENGTH_INDEFINITE).setAction(R.string.text_retry, action).show()
+    errorSnackbar(error).setAction(R.string.text_retry, action).show()
 }
 
 fun View.showErrorInfo(error: Throwable) {
-    errorSnackbar(error, Snackbar.LENGTH_LONG).show()
+    errorSnackbar(error).setAction(android.R.string.ok) {}.show()
 }
 
-private fun View.errorSnackbar(error: Throwable, duration: Int): Snackbar {
+private fun View.errorSnackbar(error: Throwable): Snackbar {
     Timber.e(error)
     val text = error.localizedMessage
-    return Snackbar.make(this, text ?: "Unknown error", duration)
+    return Snackbar.make(this, text ?: "Unknown error", Snackbar.LENGTH_INDEFINITE)
 }
 

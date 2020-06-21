@@ -75,7 +75,7 @@ class MovieListViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(LastSearchData(it)) }, { onResult(LastSearchError(it), it) })
+            .subscribe({ onResult(LastSearchData(it)) }, { Timber.e(it) })
         compositeDisposable.add(d)
     }
 

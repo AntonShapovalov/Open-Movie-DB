@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import concept.omdb.R
+import concept.omdb.data.api.MovieNotFoundException
 import concept.omdb.data.dao.Search
 import concept.omdb.ui.activity.*
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -52,8 +53,7 @@ class MovieListFragment : Fragment() {
     private fun updateUI(data: MovieData) = when (data) {
         is LastSearchData -> setLastSearchData(data.search)
         is MovieListData -> adapter.setItems(data.list)
-        is LastSearchError -> listFrame.showErrorInfo(data.error)
-        is MovieDataError -> listFrame.showErrorAction(data.error) { viewModel.reloadMovies() }
+        is MovieDataError -> showError(data.error)
         else -> Timber.d("Unhandled data %s", data.javaClass.simpleName)
     }
 
@@ -61,6 +61,13 @@ class MovieListFragment : Fragment() {
         if (search.query == null || search.query.isEmpty()) return
         floatingSearchView.setSearchText(search.query)
         search.movies?.takeIf { it.isNotEmpty() }?.let { adapter.setItems(it) }
+    }
+
+    private fun showError(error: Throwable) {
+        when (error) {
+            is MovieNotFoundException -> listFrame.showErrorInfo(error)
+            else -> listFrame.showErrorAction(error) { viewModel.reloadMovies() }
+        }
     }
 
     private fun showMovieInfo(imdbID: String) {
