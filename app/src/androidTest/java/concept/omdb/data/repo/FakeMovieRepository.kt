@@ -3,15 +3,17 @@ package concept.omdb.data.repo
 import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
 import concept.omdb.data.dao.Search
+import concept.omdb.ui.info.MovieInfoFragmentAndroidTest
+import concept.omdb.ui.list.MovieListFragmentAndroidTest
 import io.reactivex.Observable
 import java.util.*
 
 /**
- * Replace [MovieRepository] for testing of UI
+ * Fake data repository for UI testing
+ * Used in [MovieListFragmentAndroidTest] and [MovieInfoFragmentAndroidTest]
  *
- * Since [LocalDataSource] and [RemoteDataSource] are covered by
- * dedicated tests [LocalDataSourceAndroidTest] and [RemoteDataSourceTest],
- * we just provide fake objects instead of data from real sources
+ * Since [MovieRepository] is covered by dedicated [MovieRepositoryTest],
+ * just fake objects are used instead of data from real repository (network and DB)
  */
 class FakeMovieRepository : MovieRepository() {
 
