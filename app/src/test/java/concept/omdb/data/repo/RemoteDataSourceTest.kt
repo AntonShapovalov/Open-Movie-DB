@@ -4,7 +4,7 @@ import concept.omdb.data.api.MovieEntry
 import concept.omdb.data.api.MovieInfoResponse
 import concept.omdb.data.api.MovieNotFoundException
 import concept.omdb.di.ApiModule
-import concept.omdb.di.DaggerApiTestComponent
+import concept.omdb.di.DaggerTestApiComponent
 import io.reactivex.observers.TestObserver
 import org.junit.Assert
 import org.junit.Before
@@ -22,7 +22,7 @@ class RemoteDataSourceTest {
     @Inject lateinit var remoteDataSource: RemoteDataSource
 
     @Before
-    fun setUp() = DaggerApiTestComponent.builder()
+    fun setUp() = DaggerTestApiComponent.builder()
         .apiModule(ApiModule())
         .build()
         .inject(this)
@@ -40,6 +40,7 @@ class RemoteDataSourceTest {
             }.subscribe(testObserver)
         testObserver.assertNoErrors()
         testObserver.assertComplete()
+        testObserver.dispose()
     }
 
     @Test
@@ -48,6 +49,7 @@ class RemoteDataSourceTest {
         remoteDataSource.getMovies(title = "movienotfound")
             .subscribe(testObserver)
         testObserver.assertFailure(MovieNotFoundException::class.java)
+        testObserver.dispose()
     }
 
     @Test
@@ -60,6 +62,7 @@ class RemoteDataSourceTest {
             }.subscribe(testObserver)
         testObserver.assertNoErrors()
         testObserver.assertComplete()
+        testObserver.dispose()
     }
 
 }

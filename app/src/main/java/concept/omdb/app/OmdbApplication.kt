@@ -8,18 +8,18 @@ import concept.omdb.di.AppModule
 import concept.omdb.di.DaggerAppComponent
 import timber.log.Timber
 
-class OMDBApplication : Application() {
+open class OmdbApplication : Application() {
 
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(applicationContext))
-            .apiModule(ApiModule())
-            .build()
-    }
+    val appComponent: AppComponent by lazy { initAppComponent() }
 
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
+
+    open fun initAppComponent(): AppComponent = DaggerAppComponent.builder()
+        .appModule(AppModule(applicationContext))
+        .apiModule(ApiModule())
+        .build()
 
 }

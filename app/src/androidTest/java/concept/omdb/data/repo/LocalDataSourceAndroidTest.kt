@@ -7,7 +7,7 @@ import concept.omdb.data.api.MovieInfoResponse
 import concept.omdb.data.dao.DaoSession
 import concept.omdb.data.dao.Search
 import concept.omdb.di.AppModule
-import concept.omdb.di.DaggerDbTestComponent
+import concept.omdb.di.DaggerTestDbComponent
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -31,7 +31,7 @@ class LocalDataSourceAndroidTest {
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
-        DaggerDbTestComponent.builder()
+        DaggerTestDbComponent.builder()
             .appModule(AppModule(context))
             .build()
             .inject(this)

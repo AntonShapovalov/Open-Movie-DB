@@ -5,11 +5,11 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * Provides dependencies for [LocalDataSourceAndroidTest]
+ * Provides Android context dependencies for [LocalDataSourceAndroidTest]
  */
 @Singleton
 @Component(modules = [AppModule::class])
-interface DbTestComponent {
+interface TestDbComponent {
 
     fun inject(test: LocalDataSourceAndroidTest)
 

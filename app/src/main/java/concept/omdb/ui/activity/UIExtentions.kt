@@ -4,7 +4,7 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import concept.omdb.R
-import concept.omdb.app.OMDBApplication
+import concept.omdb.app.OmdbApplication
 import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
 import concept.omdb.data.dao.Search
@@ -17,7 +17,7 @@ data class MovieInfoData(val info: MovieInfo) : MovieData()
 data class LastSearchData(val search: Search) : MovieData()
 data class MovieDataError(val error: Throwable) : MovieData()
 
-val FragmentActivity.appComponent: AppComponent get() = (application as OMDBApplication).appComponent
+val FragmentActivity.appComponent: AppComponent get() = (application as OmdbApplication).appComponent
 
 fun View.showOrHide(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.INVISIBLE

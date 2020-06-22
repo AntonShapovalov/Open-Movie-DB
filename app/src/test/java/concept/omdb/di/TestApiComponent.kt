@@ -9,7 +9,7 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = [ApiModule::class])
-interface ApiTestComponent {
+interface TestApiComponent {
 
     fun inject(test: RemoteDataSourceTest)
 

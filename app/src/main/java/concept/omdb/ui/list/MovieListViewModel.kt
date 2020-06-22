@@ -2,11 +2,13 @@ package concept.omdb.ui.list
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import concept.omdb.app.SchedulerProvider
 import concept.omdb.data.repo.MovieRepository
-import concept.omdb.ui.activity.*
-import io.reactivex.android.schedulers.AndroidSchedulers
+import concept.omdb.ui.activity.LastSearchData
+import concept.omdb.ui.activity.MovieData
+import concept.omdb.ui.activity.MovieDataError
+import concept.omdb.ui.activity.MovieListData
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,6 +18,7 @@ import javax.inject.Inject
 class MovieListViewModel : ViewModel() {
 
     @Inject lateinit var repository: MovieRepository
+    @Inject lateinit var schedulers: SchedulerProvider
 
     val data = MutableLiveData<MovieData>()
     val progress = MutableLiveData<Boolean>()
@@ -27,7 +30,7 @@ class MovieListViewModel : ViewModel() {
 
     /**
      * Get last executed search from local DB
-     * Loads only once on screen start, if [data] exists - just return
+     * Loads only once on screen start, otherwise, if [data] exists, just return
      */
     fun loadLastSearch() {
         if (data.value != null) return
@@ -72,8 +75,8 @@ class MovieListViewModel : ViewModel() {
     private fun getLastSearch() {
         if (isProgress) return else progress.value = true
         val d = repository.getLastSearch()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
             .subscribe({ onResult(LastSearchData(it)) }, { Timber.e(it) })
         compositeDisposable.add(d)
@@ -82,8 +85,8 @@ class MovieListViewModel : ViewModel() {
     private fun getSuggestions() {
         val d = repository.getAllQueries()
             .map { query -> query.map { MovieSuggestion(it) } }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.main)
             .subscribe({ suggestions.addAll(it) }, { Timber.e(it) })
         compositeDisposable.add(d)
     }
@@ -91,15 +94,15 @@ class MovieListViewModel : ViewModel() {
     private fun getMovies() {
         if (isProgress) return else progress.value = true
         val d = repository.getMovies(query)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(MovieListData(it)) }, { onResult(MovieDataError(it), it) })
+            .subscribe({ onResult(MovieListData(it)) }, { onResult(MovieDataError(it)) })
         compositeDisposable.add(d)
     }
 
-    private fun onResult(value: MovieData, error: Throwable? = null) {
-        if (error != null) Timber.e(error)
+    private fun onResult(value: MovieData) {
+        if (value is MovieDataError) Timber.e(value.error)
         Timber.d("data -> %s", value.javaClass.simpleName)
         data.value = value
     }

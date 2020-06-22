@@ -2,13 +2,12 @@ package concept.omdb.ui.info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import concept.omdb.app.SchedulerProvider
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.MovieData
 import concept.omdb.ui.activity.MovieDataError
 import concept.omdb.ui.activity.MovieInfoData
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,6 +17,7 @@ import javax.inject.Inject
 class MovieInfoViewModel : ViewModel() {
 
     @Inject lateinit var repository: MovieRepository
+    @Inject lateinit var schedulers: SchedulerProvider
 
     val data = MutableLiveData<MovieData>()
     val progress = MutableLiveData<Boolean>()
@@ -50,14 +50,14 @@ class MovieInfoViewModel : ViewModel() {
     private fun getMovieInfo() {
         if (isProgress) return else progress.value = true
         disposable = repository.getMovieInfo(imdbID)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(MovieInfoData(it)) }, { onResult(MovieDataError(it), it) })
+            .subscribe({ onResult(MovieInfoData(it)) }, { onResult(MovieDataError(it)) })
     }
 
-    private fun onResult(value: MovieData, error: Throwable? = null) {
-        if (error != null) Timber.e(error)
+    private fun onResult(value: MovieData) {
+        if (value is MovieDataError) Timber.e(value.error)
         Timber.d("data -> %s", value.javaClass.simpleName)
         data.value = value
     }
