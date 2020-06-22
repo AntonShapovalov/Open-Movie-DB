@@ -4,6 +4,7 @@ import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
 import concept.omdb.data.dao.Search
 import io.reactivex.Observable
+import java.util.*
 
 /**
  * Replace [MovieRepository] for testing of UI
@@ -14,35 +15,34 @@ import io.reactivex.Observable
  */
 class FakeMovieRepository : MovieRepository() {
 
-    companion object {
-        val movieList = listOf(
-            Movie(1, "imdb_1", "title_1", "year_1", "type_1", "poster_1"),
-            Movie(2, "imdb_2", "title_2", "year_2", "type_2", "poster_2"),
-            Movie(3, "imdb_3", "title_3", "year_3", "type_3", "poster_3")
-        )
+    val movieList = arrayListOf(
+        Movie(1, "imdb_1", "title_1", "year_1", "type_1", "poster_1")
+    )
 
-        val movieInfo = MovieInfo(
-            1,
-            "imdb_1",
-            "title_1",
-            "year_1",
-            "genre_1",
-            "director_1",
-            "actors_1",
-            "plot_1",
-            "poster_1",
-            "metaScore_1",
-            "imdbRating_1"
-        )
+    val movieInfo = MovieInfo(
+        1,
+        "imdb_1",
+        "title_1",
+        "year_1",
+        "genre_1",
+        "director_1",
+        "actors_1",
+        "plot_1",
+        "poster_1",
+        "metaScore_1",
+        "imdbRating_1"
+    )
 
-        val search = FakeSearch(1, "query_1", System.currentTimeMillis())
+    val search = FakeSearch(1, "query_1", System.currentTimeMillis(), movieList)
 
-        val queries = listOf("query_1")
-
-        class FakeSearch(id: Long, query: String, execDate: Long) : Search(id, query, execDate) {
-            override fun getMovies(): MutableList<Movie> {
-                return movieList.toMutableList()
-            }
+    class FakeSearch(
+        id: Long,
+        query: String,
+        execDate: Long,
+        private var movieList: ArrayList<Movie>
+    ) : Search(id, query, execDate) {
+        override fun getMovies(): MutableList<Movie> {
+            return movieList
         }
     }
 
@@ -59,7 +59,7 @@ class FakeMovieRepository : MovieRepository() {
     }
 
     override fun getAllQueries(): Observable<List<String>> {
-        return Observable.just(queries)
+        return Observable.just(listOf("query_1"))
     }
 
 }

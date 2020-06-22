@@ -2,7 +2,7 @@ package concept.omdb.ui.info
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import concept.omdb.app.SchedulerProvider
+import concept.omdb.ui.activity.SchedulerProvider
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.MovieData
 import concept.omdb.ui.activity.MovieDataError

@@ -1,7 +1,7 @@
 package concept.omdb.di
 
-import concept.omdb.app.SchedulerProvider
-import concept.omdb.app.TestSchedulerProvider
+import concept.omdb.ui.activity.SchedulerProvider
+import concept.omdb.ui.activity.TestSchedulerProvider
 import concept.omdb.data.repo.FakeMovieRepository
 import concept.omdb.data.repo.MovieRepository
 import dagger.Module
