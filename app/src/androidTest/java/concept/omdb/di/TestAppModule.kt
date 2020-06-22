@@ -9,7 +9,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Provide fake data for UI testing
+ * Provides fake data for UI testing
  */
 @Module
 class TestAppModule {

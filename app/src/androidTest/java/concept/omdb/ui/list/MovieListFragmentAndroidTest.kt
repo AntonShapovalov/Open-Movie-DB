@@ -17,11 +17,13 @@ import org.junit.runner.RunWith
 import javax.inject.Inject
 
 /**
- * Test works with fake data from [FakeMovieRepository]
- * [TestOmdbApplication] provides dependencies via [TestAppComponent]
+ * Test for [MovieListFragment]
+ *
+ * Test works with fake data from [FakeMovieRepository],
+ * that is provided by [TestAppComponent] via [TestOmdbApplication]
  */
 @RunWith(AndroidJUnit4::class)
-class MovieListFragmentTest {
+class MovieListFragmentAndroidTest {
 
     @Inject lateinit var repository: MovieRepository
     private val fakeRepository: FakeMovieRepository by lazy { repository as FakeMovieRepository }

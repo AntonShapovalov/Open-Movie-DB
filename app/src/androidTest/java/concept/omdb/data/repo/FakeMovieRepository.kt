@@ -59,7 +59,7 @@ class FakeMovieRepository : MovieRepository() {
     }
 
     override fun getAllQueries(): Observable<List<String>> {
-        return Observable.just(listOf("query_1"))
+        return Observable.just(listOf(search.query))
     }
 
 }

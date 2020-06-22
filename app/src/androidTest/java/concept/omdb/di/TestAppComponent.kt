@@ -1,7 +1,8 @@
 package concept.omdb.di
 
 import concept.omdb.data.repo.FakeMovieRepository
-import concept.omdb.ui.list.MovieListFragmentTest
+import concept.omdb.ui.info.MovieInfoFragmentAndroidTest
+import concept.omdb.ui.list.MovieListFragmentAndroidTest
 import dagger.Component
 import javax.inject.Singleton
 
@@ -12,6 +13,8 @@ import javax.inject.Singleton
 @Component(modules = [TestAppModule::class])
 interface TestAppComponent : AppComponent {
 
-    fun inject(test: MovieListFragmentTest)
+    fun inject(test: MovieListFragmentAndroidTest)
+
+    fun inject(test: MovieInfoFragmentAndroidTest)
 
 }
