@@ -75,6 +75,7 @@ class MovieRepositoryTest {
             .subscribe(testObserver)
         testObserver.assertNoErrors()
         testObserver.assertComplete()
+        testObserver.dispose()
     }
 
     private fun repository_getMovieInfo() {
@@ -84,6 +85,7 @@ class MovieRepositoryTest {
             .subscribe(testObserver)
         testObserver.assertNoErrors()
         testObserver.assertComplete()
+        testObserver.dispose()
     }
 
 }

@@ -1,8 +1,8 @@
 package concept.omdb.di
 
 import concept.omdb.ui.activity.SchedulerProvider
-import concept.omdb.ui.activity.TestSchedulerProvider
-import concept.omdb.data.repo.FakeMovieRepository
+import concept.omdb.ui.activity.AndroidTestSchedulerProvider
+import concept.omdb.data.repo.FakeAndroidTestRepository
 import concept.omdb.data.repo.MovieRepository
 import dagger.Module
 import dagger.Provides
@@ -17,13 +17,13 @@ class TestAppModule {
     @Singleton
     @Provides
     fun provideFakeMovieRepository(): MovieRepository {
-        return FakeMovieRepository()
+        return FakeAndroidTestRepository()
     }
 
     @Singleton
     @Provides
     fun provideTestSchedulers(): SchedulerProvider {
-        return TestSchedulerProvider()
+        return AndroidTestSchedulerProvider()
     }
 
 }

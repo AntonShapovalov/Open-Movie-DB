@@ -3,19 +3,19 @@ package concept.omdb.data.repo
 import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
 import concept.omdb.data.dao.Search
-import concept.omdb.ui.info.MovieInfoFragmentAndroidTest
-import concept.omdb.ui.list.MovieListFragmentAndroidTest
+import concept.omdb.ui.info.MovieInfoViewModelTest
+import concept.omdb.ui.list.MovieListViewModelTest
 import io.reactivex.Observable
 import java.util.*
 
 /**
- * Fake data repository for UI testing
- * Used in [MovieListFragmentAndroidTest] and [MovieInfoFragmentAndroidTest]
+ * Fake data repository for View Models' testing
+ * Used in [MovieListViewModelTest] and [MovieInfoViewModelTest]
  *
  * Since [MovieRepository] is covered by dedicated [MovieRepositoryTest],
  * just fake objects are used instead of data from real repository (network and DB)
  */
-class FakeMovieRepository : MovieRepository() {
+class FakeTestRepository : MovieRepository() {
 
     val movieList = arrayListOf(
         Movie(1, "imdb_1", "title_1", "year_1", "type_1", "poster_1")

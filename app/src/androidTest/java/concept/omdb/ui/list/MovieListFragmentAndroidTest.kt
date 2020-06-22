@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import concept.omdb.R
 import concept.omdb.app.TestOmdbApplication
-import concept.omdb.data.repo.FakeMovieRepository
+import concept.omdb.data.repo.FakeAndroidTestRepository
 import concept.omdb.data.repo.MovieRepository
 import concept.omdb.di.TestAppComponent
 import org.junit.Before
@@ -17,16 +17,16 @@ import org.junit.runner.RunWith
 import javax.inject.Inject
 
 /**
- * Test for [MovieListFragment]
+ * Android test for [MovieListFragment]
  *
- * Test works with fake data from [FakeMovieRepository],
+ * Test works with fake data from [FakeAndroidTestRepository],
  * that is provided by [TestAppComponent] via [TestOmdbApplication]
  */
 @RunWith(AndroidJUnit4::class)
 class MovieListFragmentAndroidTest {
 
     @Inject lateinit var repository: MovieRepository
-    private val fakeRepository: FakeMovieRepository by lazy { repository as FakeMovieRepository }
+    private val fakeRepository: FakeAndroidTestRepository by lazy { repository as FakeAndroidTestRepository }
 
     @Before
     fun setUp() {
