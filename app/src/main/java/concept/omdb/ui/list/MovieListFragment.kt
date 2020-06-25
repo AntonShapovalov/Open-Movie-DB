@@ -27,6 +27,11 @@ class MovieListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.appComponent?.inject(viewModel)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -37,12 +42,7 @@ class MovieListFragment : Fragment() {
             setOnSearchListener(MovieSearchListener(this, viewModel))
             setOnQueryChangeListener(MovieQueryChangeListener(this, viewModel))
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         with(viewModel) {
-            activity?.appComponent?.inject(this)
             progress.observe(viewLifecycleOwner, Observer { progressBar.showOrHide(it) })
             data.observe(viewLifecycleOwner, Observer { updateUI(it) })
             loadLastSearch()

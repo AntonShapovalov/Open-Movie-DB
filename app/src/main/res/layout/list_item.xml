@@ -12,7 +12,6 @@
         android:layout_height="96dp"
         android:layout_rowSpan="2"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/image_description"
         android:scaleType="centerCrop"
