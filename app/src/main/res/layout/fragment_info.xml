@@ -1,156 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/infoFrame"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/background_light">
 
-    <ScrollView
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="16dp">
 
-        <GridLayout
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="16dp">
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal">
 
             <ImageView
                 android:id="@+id/imageViewPoster"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_description"
                 android:src="@drawable/ic_movie_placeholder" />
 
-            <TextView
-                android:id="@+id/textViewTitle"
-                android:layout_width="0dp"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                tools:text="Terminator 2: Judgment Day" />
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="visible" />
+        </FrameLayout>
 
-            <!-- Year -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_year"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            tools:text="Terminator 2: Judgment Day" />
 
-            <TextView
-                android:id="@+id/textViewYear"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="1991" />
+        <!-- Year -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_year"
+            android:textStyle="bold" />
 
-            <!-- Genre -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_genre"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="1991" />
 
-            <TextView
-                android:id="@+id/textViewGenre"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="fantasy" />
+        <!-- Genre -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_genre"
+            android:textStyle="bold" />
 
-            <!-- Director -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_director"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="fantasy" />
 
-            <TextView
-                android:id="@+id/textViewDirector"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="Cameron" />
+        <!-- Director -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_director"
+            android:textStyle="bold" />
 
-            <!-- Actors -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_actors"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewDirector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="Cameron" />
 
-            <TextView
-                android:id="@+id/textViewActors"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="Arnold, Linda" />
+        <!-- Actors -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_actors"
+            android:textStyle="bold" />
 
-            <!-- MetaScore -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_meta_score"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewActors"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="Arnold, Linda" />
 
-            <TextView
-                android:id="@+id/textViewMetaScore"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="99" />
+        <!-- MetaScore -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_meta_score"
+            android:textStyle="bold" />
 
-            <!-- ImdbRating -->
-            <TextView
-                android:layout_width="@dimen/image_info_name_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/movie_imdb_rating"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/textViewMetaScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="99" />
 
-            <TextView
-                android:id="@+id/textViewImdbRating"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="99.9" />
+        <!-- ImdbRating -->
+        <TextView
+            android:layout_width="@dimen/image_info_name_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/movie_imdb_rating"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textViewPlot"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="8dp"
-                tools:text="A cyborg, identical to the one who failed to kill Sarah Connor, must now protect her teenage son, John Connor, from a more advanced and powerful cyborg." />
+        <TextView
+            android:id="@+id/textViewImdbRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="99.9" />
 
-        </GridLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/textViewPlot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginTop="8dp"
+            tools:text="A cyborg, identical to the one who failed to kill Sarah Connor, must now protect her teenage son, John Connor, from a more advanced and powerful cyborg." />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="visible" />
-
-</FrameLayout>
+    </GridLayout>
+</ScrollView>
