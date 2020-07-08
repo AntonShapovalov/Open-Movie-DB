@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import concept.omdb.data.repo.FakeTestRepository
 import concept.omdb.ui.activity.MovieData
 import concept.omdb.ui.activity.MovieInfoData
-import concept.omdb.ui.activity.TestSchedulerProvider
+import concept.omdb.ui.activity.TestSchedulers
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +24,7 @@ class MovieInfoViewModelTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     private val fakeRepository = FakeTestRepository()
-    private val testSchedulers = TestSchedulerProvider()
+    private val testSchedulers = TestSchedulers()
     private lateinit var viewModel: MovieInfoViewModel
     private lateinit var latch: CountDownLatch
 

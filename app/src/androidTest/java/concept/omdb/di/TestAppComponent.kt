@@ -13,6 +13,11 @@ import javax.inject.Singleton
 @Component(modules = [TestAppModule::class])
 interface TestAppComponent : AppComponent {
 
+    @Component.Factory
+    interface Factory {
+        fun create(): TestAppComponent
+    }
+
     fun inject(test: MovieListFragmentAndroidTest)
 
     fun inject(test: MovieInfoFragmentAndroidTest)

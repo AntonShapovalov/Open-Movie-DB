@@ -1,23 +1,23 @@
 package concept.omdb.di
 
-import android.content.Context
-import concept.omdb.data.dao.DaoMaster
-import concept.omdb.data.dao.DaoSession
+import concept.omdb.app.SchedulerProvider
+import concept.omdb.data.repo.MovieDataRepository
+import concept.omdb.data.repo.MovieRepository
+import concept.omdb.ui.activity.UISchedulers
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 /**
- * Provide local (DB, context) dependencies for [AppComponent]
+ * Provides app scope dependencies, like data repository and rx schedulers
  */
+@Suppress("unused")
 @Module
-class AppModule(private val context: Context) {
+abstract class AppModule {
 
-    @Singleton
-    @Provides
-    fun provideDaoSession(): DaoSession {
-        val db = DaoMaster.DevOpenHelper(context, "movie-db").writableDb
-        return DaoMaster(db).newSession()
-    }
+    @Binds
+    abstract fun provideMovieRepository(repository: MovieDataRepository): MovieRepository
+
+    @Binds
+    abstract fun provideSchedulers(schedulers: UISchedulers): SchedulerProvider
 
 }

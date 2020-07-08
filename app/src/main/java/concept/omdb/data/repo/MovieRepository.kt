@@ -4,65 +4,35 @@ import concept.omdb.data.dao.Movie
 import concept.omdb.data.dao.MovieInfo
 import concept.omdb.data.dao.Search
 import io.reactivex.Observable
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
- * Provides movies' data from local db or remote source
+ * Repository interface for UI (ViewModels) and testing
+ * Dagger app module provides implementation [MovieDataRepository] for UI
+ * Testing module provides own fake implementation
  */
-@Singleton
-open class MovieRepository @Inject constructor() {
-
-    @Inject lateinit var localData: LocalDataSource
-    @Inject lateinit var remoteData: RemoteDataSource
+interface MovieRepository {
 
     /**
      * Get movies' list from local cache or from remote API
      * If local cache is expired (see [LocalDataSource.expirationTime]) - reload data from API
      */
-    open fun getMovies(query: String): Observable<List<Movie>> =
-        localMovies(query).switchIfEmpty(Observable.defer { remoteMovies(query) })
+    fun getMovies(query: String): Observable<List<Movie>>
 
     /**
      * Get movie info from local cache or from remote API
      * If local data exists - always return it, never reload from API
      */
-    open fun getMovieInfo(imdbID: String): Observable<MovieInfo> =
-        localMovieInfo(imdbID).switchIfEmpty(Observable.defer { remoteMovieInfo(imdbID) })
+    fun getMovieInfo(imdbID: String): Observable<MovieInfo>
 
     /**
      * Load last search from local DB
      * If search does not exists yet (on first app start), returns empty object (query is null)
      */
-    open fun getLastSearch(): Observable<Search> =
-        Observable.fromCallable { localData.getLastSearch() }
+    fun getLastSearch(): Observable<Search>
 
     /**
      * Get all saved queries from local DB
      */
-    open fun getAllQueries(): Observable<List<String>> = Observable
-        .fromCallable { localData.getAllSearches() }
-        .map { search -> search.map { it.query } }
-
-    /**
-     * Private functions to keep public functions' code shorter, readable and testable
-     */
-    private fun localMovies(query: String): Observable<List<Movie>> = Observable
-        .fromCallable { localData.getMovies(query) }
-        .filter { it.isNotEmpty() }
-
-    private fun remoteMovies(query: String): Observable<List<Movie>> = remoteData
-        .getMovies(title = query)
-        .doOnNext { localData.saveMovies(query, it) }
-        .map { localData.getMovies(query) }
-
-    private fun localMovieInfo(imdbID: String): Observable<MovieInfo> = Observable
-        .fromCallable { localData.getMovieInfo(imdbID) }
-        .filter { !it.imdbID.isNullOrEmpty() }
-
-    private fun remoteMovieInfo(imdbID: String): Observable<MovieInfo> = remoteData
-        .getMovieInfo(imdbID = imdbID)
-        .doOnNext { localData.saveMovieInfo(it) }
-        .map { localData.getMovieInfo(imdbID) }
+    fun getAllQueries(): Observable<List<String>>
 
 }

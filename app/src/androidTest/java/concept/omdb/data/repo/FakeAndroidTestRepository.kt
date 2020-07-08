@@ -7,15 +7,18 @@ import concept.omdb.ui.info.MovieInfoFragmentAndroidTest
 import concept.omdb.ui.list.MovieListFragmentAndroidTest
 import io.reactivex.Observable
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Fake data repository for UI testing
  * Used in [MovieListFragmentAndroidTest] and [MovieInfoFragmentAndroidTest]
  *
- * Since [MovieRepository] is covered by dedicated [MovieRepositoryTest],
+ * Since [MovieDataRepository] is covered by dedicated [MovieRepositoryTest],
  * just fake objects are used instead of data from real repository (network and DB)
  */
-class FakeAndroidTestRepository : MovieRepository() {
+@Singleton
+class FakeAndroidTestRepository @Inject constructor() : MovieRepository {
 
     val movieList = arrayListOf(
         Movie(1, "imdb_1", "title_1", "year_1", "type_1", "poster_1")

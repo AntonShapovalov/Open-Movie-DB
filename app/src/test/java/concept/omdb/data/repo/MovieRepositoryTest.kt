@@ -11,7 +11,7 @@ import org.junit.Test
 import org.mockito.Mockito.*
 
 /**
- * Test for [MovieRepository]
+ * Test for [MovieDataRepository]
  *
  * Since [LocalDataSource] and [RemoteDataSource] are covered by dedicated tests
  * [LocalDataSourceAndroidTest] and [RemoteDataSourceTest], just mock them
@@ -20,7 +20,7 @@ class MovieRepositoryTest {
 
     private lateinit var localData: LocalDataSource
     private lateinit var remoteData: RemoteDataSource
-    private val repository: MovieRepository = MovieRepository()
+    private val repository: MovieDataRepository = MovieDataRepository()
     private val dummy = "dummy"
     private val movieList = listOf(Movie())
     private val movieInfo = MovieInfo().apply { imdbID = "1" }

@@ -8,7 +8,8 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level
+import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+import okhttp3.logging.HttpLoggingInterceptor.Level.NONE
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,31 +26,32 @@ class ApiModule {
     private val connectionTimeout = 30 // seconds
     private val readTimeout = 30 // seconds
 
+    private val isDebug = BuildConfig.DEBUG
+
+    private val gson: Gson get() = GsonBuilder().create()
+
+    private val interceptor: HttpLoggingInterceptor
+        get() = HttpLoggingInterceptor().apply { level = if (isDebug) BODY else NONE }
+
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
+    fun provideApiService(): ApiService {
+        val client = buildClient()
+        val retrofit = buildRetrofit(client)
+        return retrofit.create(ApiService::class.java)
+    }
 
-    @Provides
-    fun provideRetrofit(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
+    private fun buildRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
-    @Provides
-    fun provideClient(interceptor: HttpLoggingInterceptor): OkHttpClient = OkHttpClient.Builder()
+    private fun buildClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(interceptor)
         .connectTimeout(connectionTimeout.toLong(), TimeUnit.SECONDS)
         .readTimeout(readTimeout.toLong(), TimeUnit.SECONDS)
         .build()
-
-    @Provides
-    fun provideInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) Level.BODY else Level.NONE
-    }
-
-    @Provides
-    fun provideGson(): Gson = GsonBuilder().create()
 
 }

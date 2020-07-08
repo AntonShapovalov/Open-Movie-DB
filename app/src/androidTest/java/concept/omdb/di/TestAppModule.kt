@@ -1,29 +1,23 @@
 package concept.omdb.di
 
-import concept.omdb.ui.activity.SchedulerProvider
-import concept.omdb.ui.activity.AndroidTestSchedulerProvider
+import concept.omdb.app.SchedulerProvider
 import concept.omdb.data.repo.FakeAndroidTestRepository
 import concept.omdb.data.repo.MovieRepository
+import concept.omdb.ui.activity.AndroidTestSchedulers
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 /**
  * Provides fake data for UI testing
  */
+@Suppress("unused")
 @Module
-class TestAppModule {
+abstract class TestAppModule {
 
-    @Singleton
-    @Provides
-    fun provideFakeMovieRepository(): MovieRepository {
-        return FakeAndroidTestRepository()
-    }
+    @Binds
+    abstract fun provideFakeRepository(repository: FakeAndroidTestRepository): MovieRepository
 
-    @Singleton
-    @Provides
-    fun provideTestSchedulers(): SchedulerProvider {
-        return AndroidTestSchedulerProvider()
-    }
+    @Binds
+    abstract fun provideTestSchedulers(schedulers: AndroidTestSchedulers): SchedulerProvider
 
 }
