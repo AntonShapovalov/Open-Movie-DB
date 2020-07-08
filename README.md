@@ -1,6 +1,6 @@
 # Open Movie Database
 
-#### Android application concept to search movie using [OMDB API](https://www.omdbapi.com) and save result to local DB
+#### Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save result to local DB
 
 Project keeps focus on testing all layers (data sources, repository, ViewModel, LiveData and Fragments) using AndroidX test library in [conjunction](https://codelabs.developers.google.com/codelabs/android-dagger/#13) with Dagger.
 [AndroidInstrumentedTestSuite](./app/src/androidTest/java/concept/omdb/AndroidInstrumentedTestSuite.kt) holds all instrumented tests for local SQLite DB (GreenDao) and Fragments (Espresso tests).
