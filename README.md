@@ -19,7 +19,7 @@ Please find **app-release.apk** file inside [release](./app/release) folder
  * [Kotlin](https://kotlinlang.org/docs/tutorials/kotlin-android.html) - primary project language
  * [Navigation component](https://developer.android.com/guide/navigation) - handles all navigation aspects, allows to avoid boilerplate code with fragments transaction, backstack etc.
  * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) - the core of [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) pattern
- * [AndroidX testing](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/index.html#0) - library to test all layers of app code
+ * [AndroidX testing](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/#0) - library to test all layers of app code
  * [Dagger](https://codelabs.developers.google.com/codelabs/android-dagger/#0) - dependency injection framework
  * [RxJava](https://github.com/ReactiveX/RxJava) - simple way to manage data chains
  * [Retrofit](https://square.github.io/retrofit/) - to perform API call
