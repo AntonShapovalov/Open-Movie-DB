@@ -1,6 +1,5 @@
 package concept.omdb.di
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import concept.omdb.BuildConfig
 import concept.omdb.data.api.ApiService
@@ -26,12 +25,8 @@ class ApiModule {
     private val connectionTimeout = 30 // seconds
     private val readTimeout = 30 // seconds
 
-    private val isDebug = BuildConfig.DEBUG
-
-    private val gson: Gson get() = GsonBuilder().create()
-
     private val interceptor: HttpLoggingInterceptor
-        get() = HttpLoggingInterceptor().apply { level = if (isDebug) BODY else NONE }
+        get() = HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) BODY else NONE }
 
     @Singleton
     @Provides
@@ -45,7 +40,7 @@ class ApiModule {
         .baseUrl(baseUrl)
         .client(client)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
         .build()
 
     private fun buildClient(): OkHttpClient = OkHttpClient.Builder()
