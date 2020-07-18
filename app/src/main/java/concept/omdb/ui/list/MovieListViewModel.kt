@@ -1,32 +1,18 @@
 package concept.omdb.ui.list
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import concept.omdb.app.SchedulerProvider
-import concept.omdb.data.repo.MovieRepository
 import concept.omdb.ui.activity.LastSearchData
-import concept.omdb.ui.activity.MovieData
 import concept.omdb.ui.activity.MovieDataError
 import concept.omdb.ui.activity.MovieListData
-import io.reactivex.disposables.CompositeDisposable
+import concept.omdb.ui.activity.MovieViewModel
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * View Model for [MovieListFragment]
  */
-class MovieListViewModel : ViewModel() {
-
-    @Inject lateinit var repository: MovieRepository
-    @Inject lateinit var schedulers: SchedulerProvider
-
-    val data = MutableLiveData<MovieData>()
-    val progress = MutableLiveData<Boolean>()
+class MovieListViewModel : MovieViewModel() {
 
     private var query = ""
     private val suggestions = HashSet<MovieSuggestion>()
-    private var compositeDisposable = CompositeDisposable()
-    private val isProgress get() = progress.value == true
 
     /**
      * Get last executed search from local DB
@@ -97,19 +83,8 @@ class MovieListViewModel : ViewModel() {
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(MovieListData(it)) }, { onResult(MovieDataError(it)) })
+            .subscribe({ onResult(MovieListData(it)) }, { onError(MovieDataError(it), it) })
         compositeDisposable.add(d)
-    }
-
-    private fun onResult(value: MovieData) {
-        if (value is MovieDataError) Timber.e(value.error)
-        Timber.d("data -> %s", value.javaClass.simpleName)
-        data.value = value
-    }
-
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
     }
 
 }
