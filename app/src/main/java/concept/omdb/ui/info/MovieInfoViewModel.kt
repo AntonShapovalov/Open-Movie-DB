@@ -1,6 +1,5 @@
 package concept.omdb.ui.info
 
-import concept.omdb.ui.activity.MovieDataError
 import concept.omdb.ui.activity.MovieInfoData
 import concept.omdb.ui.activity.MovieViewModel
 
@@ -35,10 +34,11 @@ class MovieInfoViewModel : MovieViewModel() {
     private fun getMovieInfo() {
         if (isProgress) return else progress.value = true
         val d = repository.getMovieInfo(imdbID)
+            .map { MovieInfoData(it) }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(MovieInfoData(it)) }, { onError(MovieDataError(it), it) })
+            .subscribe({ onResult(it) }, { onError(it) })
         compositeDisposable.add(d)
     }
 

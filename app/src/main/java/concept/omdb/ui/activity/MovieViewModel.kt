@@ -29,9 +29,9 @@ abstract class MovieViewModel : ViewModel() {
         data.value = value
     }
 
-    protected fun onError(value: MovieData, t: Throwable) {
+    protected fun onError(t: Throwable) {
         Timber.e(t)
-        onResult(value)
+        onResult(MovieDataError(t))
     }
 
     override fun onCleared() {

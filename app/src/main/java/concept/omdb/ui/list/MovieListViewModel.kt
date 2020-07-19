@@ -1,7 +1,6 @@
 package concept.omdb.ui.list
 
 import concept.omdb.ui.activity.LastSearchData
-import concept.omdb.ui.activity.MovieDataError
 import concept.omdb.ui.activity.MovieListData
 import concept.omdb.ui.activity.MovieViewModel
 import timber.log.Timber
@@ -61,10 +60,11 @@ class MovieListViewModel : MovieViewModel() {
     private fun getLastSearch() {
         if (isProgress) return else progress.value = true
         val d = repository.getLastSearch()
+            .map { LastSearchData(it) }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(LastSearchData(it)) }, { Timber.e(it) })
+            .subscribe({ onResult(it) }, { Timber.e(it) })
         compositeDisposable.add(d)
     }
 
@@ -80,10 +80,11 @@ class MovieListViewModel : MovieViewModel() {
     private fun getMovies() {
         if (isProgress) return else progress.value = true
         val d = repository.getMovies(query)
+            .map { MovieListData(it) }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.main)
             .doFinally { progress.postValue(false) }
-            .subscribe({ onResult(MovieListData(it)) }, { onError(MovieDataError(it), it) })
+            .subscribe({ onResult(it) }, { onError(it) })
         compositeDisposable.add(d)
     }
 
