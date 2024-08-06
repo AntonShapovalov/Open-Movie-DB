@@ -1,7 +1,7 @@
 # Open Movie Database 
-## Deprecated: is going to be replaced with [Clean-Architecture](https://github.com/AntonShapovalov/Clean-Architecture)
+### _Deprecated: is going to be replaced with [Clean-Architecture](https://github.com/AntonShapovalov/Clean-Architecture)._
 
-#### Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save result to local DB
+#### Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save result to local DB.
 
 Project keeps focus on testing all layers (data sources, repository, ViewModel, LiveData and Fragments) using AndroidX test library in [conjunction](https://codelabs.developers.google.com/codelabs/android-dagger/#13) with Dagger.
 [AndroidInstrumentedTestSuite](./app/src/androidTest/java/concept/omdb/AndroidInstrumentedTestSuite.kt) holds all instrumented tests for local SQLite DB (GreenDao) and Fragments (Espresso tests).
@@ -14,7 +14,7 @@ Project keeps focus on testing all layers (data sources, repository, ViewModel, 
 
 #### How to install
 
-Please find **app-release.apk** file inside [release](./app/release) folder
+Please find **app-release.apk** file inside [release](./app/release) folder.
 
 #### Used language and libraries
  * [Kotlin](https://kotlinlang.org/docs/tutorials/kotlin-android.html) - primary project language
