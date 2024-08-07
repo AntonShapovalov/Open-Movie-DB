@@ -1,13 +1,13 @@
 # Open Movie Database 
 ### _Deprecated: is going to be replaced with [Clean-Architecture](https://github.com/AntonShapovalov/Clean-Architecture)._
 
-Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save result to the local DB.
+Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save the result to the local DB.
 
 #### Screen structure
-Applicaion uses Single Activity approach and JetPack Navigation libraty. Each screen is a fragment with dedicated view model:
 
-1. Search screen - allows search movies by title and displays list of results.
-2. Info screen - displays full movie's info.
+Applicaion uses Single Activity approach and JetPack Navigation libraty. Each screen is a fragment with dedicated view model:
+1. Search screen - searches movies by title and displays the list of results.
+2. Info screen - displays the full movie's info.
 
 #### How to install
 
