@@ -1,5 +1,6 @@
 # Open Movie Database 
-### _Deprecated: is going to be replaced with [Clean-Architecture](https://github.com/AntonShapovalov/Clean-Architecture)._
+> ### Deprecated! 
+> The project is going to be replaced with [Clean-Architecture](https://github.com/AntonShapovalov/Clean-Architecture).
 
 Android application concept to search movie's info using [OMDB API](https://www.omdbapi.com) and save the result to the local DB.
 
